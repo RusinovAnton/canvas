@@ -1,9 +1,13 @@
+@font-face {
+    font-family: 'Pixel Mix';
+    src: url(../../../dist/assets/fonts/pixelmix.ttf);
+}
 html {
     font-size: 10px;
 }
 
 body {
-    font-family: monospace;
+    font-family: 'Pixel Mix', monospace;
 }
 
 a {
@@ -13,4 +17,13 @@ a {
 h1 {
     text-align: center;
     text-transform: uppercase;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: bold;
 }

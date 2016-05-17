@@ -1,7 +1,7 @@
 'use strict';
 
 const gulp = require('gulp');
-const cssnano = require('gulp-cssnano');
+const cssmin = require('gulp-clean-css');
 const concatcss = require('gulp-concat-css');
 const autoprefixer = require('gulp-autoprefixer');
 const htmlmin = require('gulp-htmlmin');
@@ -25,6 +25,10 @@ const config = {
         src: './src/**/*.css',
         dest: './dist/assets/css'
     },
+    fonts: {
+        src: './src/assets/fonts/**/*',
+        dest: './dist/assets/fonts'
+    },
     html: {
         src: './src/**/*.html',
         dest: './dist/'
@@ -43,6 +47,11 @@ gulp.task('app', function () {
         .pipe(gulp.dest(config.app.dest))
 });
 
+gulp.task('fonts', function(){
+    return gulp.src(config.fonts.src)
+        .pipe(gulp.dest(config.fonts.dest, {overwrite: true}));
+});
+
 gulp.task('css', function () {
     return gulp.src(config.css.src)
         .pipe(plumber())
@@ -52,7 +61,7 @@ gulp.task('css', function () {
             browsers: ['last 2 versions'],
             cascade: false
         }))
-        .pipe(cssnano())
+        .pipe(cssmin({relativeTo: './dist/assets', root: './dist'}))
         .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest(config.css.dest));
 });
@@ -74,6 +83,6 @@ gulp.task('test', function(){
 });
 
 gulp.task('default', function () {
-    runSequence('clean', ['app', 'css', 'html']);
+    runSequence('clean', ['app', 'fonts', 'css', 'html']);
 });
 
