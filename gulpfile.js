@@ -17,7 +17,8 @@ const config = {
         config: './webpack.config.js'
     },
     app: {
-        src: './app/**/*.js',
+        watch: './app/**/*.js',
+        src: './app/index.js',
         dest: './dist/assets/js/'
     },
     css: {
@@ -60,6 +61,13 @@ gulp.task('html', function () {
     return gulp.src(config.html.src)
         .pipe(htmlmin({collapseWhitespace:true}))
         .pipe(gulp.dest(config.html.dest));
+});
+
+
+gulp.task('watch', ['default'], function(){
+    gulp.watch(config.app.watch, ['app']);
+    gulp.watch(config.css.src, ['css']);
+    gulp.watch(config.html.src, ['html']);
 });
 
 gulp.task('default', function () {

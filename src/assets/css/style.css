@@ -5,3 +5,12 @@ html {
 body {
     font-family: monospace;
 }
+
+a {
+    transition: all 0.3s;
+}
+
+h1 {
+    text-align: center;
+    text-transform: uppercase;
+}
