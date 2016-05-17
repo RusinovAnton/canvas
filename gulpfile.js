@@ -1,10 +1,68 @@
 'use strict';
 
-const gulp          = require('gulp');
-const htmlmin       = require('gulp-htmlmin');
-const plumber       = require('gulp-plumber');
-const sourcemaps    = require('gulp-sourcemaps');
-const uglify        = require('gulp-uglify');
-const webpack       = require('webpack-stream');
+const gulp = require('gulp');
+const cssnano = require('gulp-cssnano');
+const concatcss = require('gulp-concat-css');
+const autoprefixer = require('gulp-autoprefixer');
+const htmlmin = require('gulp-htmlmin');
+const plumber = require('gulp-plumber');
+const sourcemaps = require('gulp-sourcemaps');
+const uglify = require('gulp-uglify');
+const webpack = require('webpack-stream');
+const runSequence = require('run-sequence');
+const del = require('del');
 
-gulp.task('default', ['app', 'css', 'html']);
+const config = {
+    webpack: {
+        config: './webpack.config.js'
+    },
+    app: {
+        src: './app/**/*.js',
+        dest: './dist/assets/js/'
+    },
+    css: {
+        src: './src/**/*.css',
+        dest: './dist/assets/css'
+    },
+    html: {
+        src: './src/**/*.html',
+        dest: './dist/'
+    }
+};
+
+gulp.task('clean', function () {
+    return del('dist/**/*');
+});
+
+gulp.task('app', function () {
+    return gulp.src(config.app.src)
+        .pipe(plumber())
+        .pipe(webpack(require(config.webpack.config)))
+        .pipe(uglify())
+        .pipe(gulp.dest(config.app.dest))
+});
+
+gulp.task('css', function () {
+    return gulp.src(config.css.src)
+        .pipe(plumber())
+        .pipe(sourcemaps.init())
+        .pipe(concatcss('style.css'))
+        .pipe(autoprefixer({
+            browsers: ['last 2 versions'],
+            cascade: false
+        }))
+        .pipe(cssnano())
+        .pipe(sourcemaps.write('./'))
+        .pipe(gulp.dest(config.css.dest));
+});
+
+gulp.task('html', function () {
+    return gulp.src(config.html.src)
+        .pipe(htmlmin({collapseWhitespace:true}))
+        .pipe(gulp.dest(config.html.dest));
+});
+
+gulp.task('default', function () {
+    runSequence('clean', ['app', 'css', 'html']);
+});
+
