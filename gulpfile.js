@@ -63,11 +63,14 @@ gulp.task('html', function () {
         .pipe(gulp.dest(config.html.dest));
 });
 
-
 gulp.task('watch', ['default'], function(){
     gulp.watch(config.app.watch, ['app']);
     gulp.watch(config.css.src, ['css']);
     gulp.watch(config.html.src, ['html']);
+});
+
+gulp.task('test', function(){
+    console.log('No tests yet');
 });
 
 gulp.task('default', function () {
