@@ -61,9 +61,13 @@ gulp.task('css', function () {
             browsers: ['last 2 versions'],
             cascade: false
         }))
-        .pipe(cssmin({relativeTo: './dist/assets', root: './dist'}))
+        .pipe(cssmin({relativeTo: './dist/assets/css', target: './dist/assets/css'}))
         .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest(config.css.dest));
+        .pipe(gulp.dest(config.css.dest))
+
+
+
+
 });
 
 gulp.task('html', function () {
